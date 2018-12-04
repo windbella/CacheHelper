@@ -51,8 +51,8 @@ namespace CacheHelper
         /// <summary>
         /// 캐시 데이터 불러오기
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
+        /// <typeparam name="T">반환 타입</typeparam>
+        /// <param name="key">캐시 키</param>
         /// <returns></returns>
         public T Get<T>(string key) where T : class
         {
@@ -70,11 +70,11 @@ namespace CacheHelper
         /// 캐시 데이터 불러오기
         /// 데이터가 없는 경우 Loader 함수를 통하여 데이터 생성 및 저장
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="getter"></param>
-        /// <param name="cacheTime"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">반환 타입</typeparam>
+        /// <param name="key">캐시 키</param>
+        /// <param name="loader">데이터를 불러오는 로직</param>
+        /// <param name="cacheTime">캐싱 시간</param>
+        /// <returns>반환 결과</returns>
         public T Get<T>(string key, CacheDataLoader<T> loader, TimeSpan cacheTime) where T : class
         {
             SemaphoreSlim locker = GetLocker(key, cacheTime);
@@ -113,7 +113,7 @@ namespace CacheHelper
         /// <summary>
         /// 캐시 데이터 삭제하기
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">캐시 키</param>
         public void Remove(string key)
         {
             Cache.Remove(key);
@@ -133,9 +133,9 @@ namespace CacheHelper
         /// <summary>
         /// 캐시 데이터 저장하기
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <param name="cacheTime"></param>
+        /// <param name="key">캐시 키</param>
+        /// <param name="data">저장할 데이터</param>
+        /// <param name="cacheTime">캐싱 시간</param>
         public void Set(string key, object data, TimeSpan cacheTime)
         {
             Cache.Add(key, data, DateTime.Now.AddTicks(cacheTime.Ticks));
